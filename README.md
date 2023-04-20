@@ -51,6 +51,16 @@ A simple web application that counts the number of POST requests it served.
 
 ### Kubernetes
 
+1. Create a Kubernetes secret in order to pull from a private Docker registry:
+
+   ```bash
+   kubectl create secret docker-registry regcred \
+           --docker-server=< AWS's Account ID. >.dkr.ecr.< AWS's Elastic Container Registry region. >.amazonaws.com \
+           --docker-username=AWS \
+           --docker-password=$(aws ecr get-login-password) \
+           --namespace=counter-service
+   ```
+
 1. Test the Helm deployment:
 
    ```bash
