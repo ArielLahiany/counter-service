@@ -1,0 +1,27 @@
+# Continuous Integration.
+.github
+
+# Environment.
+*.env
+
+# JetBrains.
+.idea
+
+# Python.
+__pycache__
+
+# Make.
+Makefile
+
+# Markdown.
+*.md
+
+# Secure Socket Layer.
+ssl
+
+# Source control.
+.git
+.gitignore
+
+# Visual Studio Code.
+.vscode
