@@ -21,7 +21,7 @@ jobs:
       - id: "name"
         name: "Builds the Helm release name"
         run: |
-          RELEASE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]') | sed 's/.*\///'
+          RELEASE_NAME=$(echo ${{ github.repository }} | tr "[:upper:]" "[:lower:]" | sed "s/.*\///")
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
       - id: "kubeconfig"
         name: "Deploys the Kubeconfig file"
