@@ -8,7 +8,8 @@ from flask import (
 
 # Variables declaration.
 application = Flask(__name__)
-counter = 0
+get_counter = 0
+post_counter = 0
 
 
 @application.route(
@@ -19,16 +20,18 @@ counter = 0
     ]
 )
 def index() -> Response:
-    global counter
-    if request.method == "POST":
-        counter += 1
+    global get_counter
+    global post_counter
+    if request.method == "GET":
+        get_counter += 1
         return make_response(
-            "Hmm, Plus 1 please ",
+            f"Hmm, our GET counter is: {get_counter}",
             200
         )
-    else:
+    if request.method == "POST":
+        post_counter += 1
         return make_response(
-            str(f"Our counter is: {counter} "),
+            f"Hmm, our POST counter is: {post_counter}",
             200
         )
 
