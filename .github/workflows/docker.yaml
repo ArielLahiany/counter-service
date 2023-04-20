@@ -24,28 +24,47 @@ jobs:
         uses: "docker/setup-qemu-action@v1"
         with:
           platforms: "all"
-      - id: "buildx"
-        name: "Installs the Buildx CLI plugin"
-        uses: "docker/setup-buildx-action@v1"
-      - id: "cache"
-        name: "Caches the Docker building layers"
-        uses: "actions/cache@v2"
-        with:
-          path: "/tmp/.buildx-cache"
-          key: "${{ runner.os }}-buildx-${{ github.sha }}"
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-        # TODO: need to add the login to AWS logic.
-#      - id: "login"
-      - id: "build"
-        name: "Builds the pushed the Docker image"
-        uses: "docker/build-push-action@v2"
-        with:
-          context: "."
-          file: "Dockerfile"
-          platforms: "linux/amd64,linux/arm64"
-          # TODO: need to add a logic according to the tag or branch.
-          tags: "counter-service:v0.1.0"
-          cache-from: "type=local,src=/tmp/.buildx-cache"
-          cache-to: "type=local,dest=/tmp/.buildx-cache"
-          push: false
+      - id: "name"
+        name: "Builds the Docker image name"
+        run: |
+          IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+          echo "image_name=$IMAGE_NAME" >> $GITHUB_OUTPUT
+      - id: "tag"
+        name: "Builds the Docker image tag"
+        run: |
+          set -eux
+          VERSION=${GITHUB_REF#refs/tags/}
+          TAGS=$"\
+          ghcr.io/${{ steps.image.outputs.image_name }}:${NAMED_VERSION},\
+          ghcr.io/${{ steps.image.outputs.image_name }}:${VERSION}\
+          "
+          echo "
+          CONTAINER_TAGS=${TAGS}
+          NAMED_VERSION=${NAMED_VERSION}
+          VERSION=${VERSION}
+          " >> "${GITHUB_ENV}"
+#      - id: "buildx"
+#        name: "Installs the Buildx CLI plugin"
+#        uses: "docker/setup-buildx-action@v1"
+#      - id: "cache"
+#        name: "Caches the Docker building layers"
+#        uses: "actions/cache@v2"
+#        with:
+#          path: "/tmp/.buildx-cache"
+#          key: "${{ runner.os }}-buildx-${{ github.sha }}"
+#          restore-keys: |
+#            ${{ runner.os }}-buildx-
+#        # TODO: need to add the login to AWS logic.
+##      - id: "login"
+#      - id: "build"
+#        name: "Builds the pushed the Docker image"
+#        uses: "docker/build-push-action@v2"
+#        with:
+#          context: "."
+#          file: "Dockerfile"
+#          platforms: "linux/amd64,linux/arm64"
+#          # TODO: need to add a logic according to the tag or branch.
+#          tags: "counter-service:v0.1.0"
+#          cache-from: "type=local,src=/tmp/.buildx-cache"
+#          cache-to: "type=local,dest=/tmp/.buildx-cache"
+#          push: false
