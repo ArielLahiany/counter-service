@@ -26,6 +26,7 @@ jobs:
       - id: "kubeconfig"
         name: "Deploys the Kubeconfig file"
         run: |
+          mkdir /tmp/.kube
           echo "${{ secrets.KUBECONFIG_FILE }}" >> /tmp/.kube/config
       - id: "install"
         name: "Installs the Helm package"
