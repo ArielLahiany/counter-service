@@ -8,6 +8,8 @@ deployment:
     rollingUpdate:
       maxUnavailable: 0
       maxSurge: 1
+  imagePullSecrets:
+    - "regcred"
   containers:
     counter-service:
       isEnabled: true

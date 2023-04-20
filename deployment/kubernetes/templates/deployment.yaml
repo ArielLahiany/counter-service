@@ -33,6 +33,12 @@ spec:
             {{- end }}
         {{- end }}
       {{- end }}
+      {{- if .Values.deployment.imagePullSecrets }}
+      imagePullSecrets:
+      {{- range .Values.deployment.imagePullSecrets }}
+        - name: "{{ . }}"
+      {{- end }}
+      {{- end }}
       containers:
         {{- range $k, $v := .Values.deployment.containers }}
         - name: "{{ $k }}"
