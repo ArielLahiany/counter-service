@@ -4,9 +4,6 @@
 # Python.
 __pycache__
 
-# Secure Socket Layer.
-ssl
-
 # Source control.
 .git
 
