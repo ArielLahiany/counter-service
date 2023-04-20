@@ -1,0 +1,29 @@
+{{- if .Values.ingress }}
+---
+apiVersion: "networking.k8s.io/v1"
+kind: "Ingress"
+metadata:
+  name: "{{ template "counter-service.fullname" . }}"
+  labels:
+    {{- include "counter-service.labels" . | nindent 4 }}
+  {{- if .Values.ingress.annotations }}
+  annotations:
+    {{- range $k, $v := .Values.ingress.annotations }}
+    {{ $k }}: "{{ $v }}"
+    {{- end }}
+  {{- end }}
+spec:
+  ingressClassName: "{{ .Values.ingress.ingressClassName }}"
+  rules:
+    - http:
+        paths:
+          {{- range .Values.ingress.paths }}
+          - path: "{{ .path }}"
+            pathType: "{{ .pathType }}"
+            backend:
+              service:
+                name: "{{ template "counter-service.fullname" $ }}"
+                port:
+                  number: {{ $.Values.service.ports.http.port }}
+          {{- end }}
+{{- end }}

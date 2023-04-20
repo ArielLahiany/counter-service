@@ -45,6 +45,15 @@ deployment:
         - "--bind"
         - "0.0.0.0:8000"
 
+ingress:
+  annotations:
+    alb.ingress.kubernetes.io/scheme: "internet-facing"
+    alb.ingress.kubernetes.io/target-type: "ip"
+  ingressClassName: "alb"
+  paths:
+    - path: "/"
+      pathType: "Prefix"
+
 service:
   type: "ClusterIP"
   ports:
