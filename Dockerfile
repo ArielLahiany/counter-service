@@ -1,4 +1,4 @@
-FROM python:3.9.7 AS build
+FROM docker.io/python:3.9.7 AS build
 
 RUN set -eux \
     && apt-get update -y \
@@ -13,7 +13,7 @@ COPY requirements.txt .
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
-FROM python:3.9.7-slim AS release
+FROM docker.io/python:3.9.7-slim AS release
 
 RUN set -eux \
     && apt-get update -y \
