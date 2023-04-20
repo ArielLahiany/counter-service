@@ -35,3 +35,21 @@ jobs:
           key: "${{ runner.os }}-buildx-${{ github.sha }}"
           restore-keys: |
             ${{ runner.os }}-buildx-
+        # TODO: need to add the login to AWS logic.
+#      - id: "login"
+      - id: "build"
+        name: "Builds the pushed the Docker image"
+        uses: "docker/build-push-action@v2"
+        with:
+          context: "."
+          file: "Dockerfile"
+          platforms:
+            - "linux/amd64"
+            - "linux/arm64"
+          # TODO: need to add a logic according to the tag or branch.
+          tags: "counter-service:v0.1.0"
+          cache-from:
+            - "type=local,src=/tmp/.buildx-cache"
+          cache-to:
+            - "type=local,dest=/tmp/.buildx-cache"
+          push: false
