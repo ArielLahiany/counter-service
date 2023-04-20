@@ -46,8 +46,6 @@ jobs:
           platforms: "linux/amd64,linux/arm64"
           # TODO: need to add a logic according to the tag or branch.
           tags: "counter-service:v0.1.0"
-          cache-from:
-            - "type=local,src=/tmp/.buildx-cache"
-          cache-to:
-            - "type=local,dest=/tmp/.buildx-cache"
+          cache-from: "type=local,src=/tmp/.buildx-cache"
+          cache-to: "type=local,dest=/tmp/.buildx-cache"
           push: false
