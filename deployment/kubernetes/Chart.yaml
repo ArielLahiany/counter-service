@@ -1,0 +1,7 @@
+apiVersion: "v2"
+name: "counter-service"
+description: "A simple web application that counts the number of POST requests it served."
+home: "https://www.checkpoint.com/"
+type: "application"
+version: "0.1.0"
+appVersion: "v0.3.0"
