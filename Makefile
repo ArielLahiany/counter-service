@@ -1,6 +1,6 @@
 # Variables declaration ---------------------------------------------------------------------------------------------- #
 PROFILE  = "development"
-SERVICE  = "counter"
+SERVICE  = "counter-service"
 VERSION  = `git describe --tags --abbrev=0`
 
 # Docker ------------------------------------------------------------------------------------------------------------- #

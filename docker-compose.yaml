@@ -1,13 +1,13 @@
 version: "3.9"
 
 services:
-  counter:
-    image: "counter:v0.1.0"
-    container_name: "counter"
-    hostname: "counter"
+  counter-service:
+    image: "counter-service:v0.1.0"
+    container_name: "counter-service"
+    hostname: "counter-service"
     restart: "unless-stopped"
     healthcheck:
-      test: "curl --fail http://counter:8000/health || exit 1"
+      test: "curl --fail http://counter-service:8000/health || exit 1"
       interval: "5s"
       retries: 5
       start_period: "5s"
@@ -34,7 +34,7 @@ services:
     hostname: "nginx"
     restart: "unless-stopped"
     depends_on:
-      counter:
+      counter-service:
         condition: "service_healthy"
     networks:
       counter:
