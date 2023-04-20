@@ -28,4 +28,4 @@ docker-compose/up:
 # Gunicorn ----------------------------------------------------------------------------------------------------------- #
 .PHONY: gunicorn/run
 gunicorn/run:
-	gunicorn main:application --workers 4 --bind 0.0.0.0:8000
+	gunicorn main:application --workers 1 --bind 0.0.0.0:8000
