@@ -20,7 +20,7 @@ jobs:
         name: "Builds the Helm release name"
         run: |
           RELEASE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
-          echo "RELEASE_NAME=$RELEASE_NAME" ->>$GITHUB_ENV
+          echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
       - id: "install"
         name: "Installs the Helm package"
         run: |
