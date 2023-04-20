@@ -16,6 +16,11 @@ jobs:
       - id: "checkout"
         name: "Checkouts the Git repository"
         uses: "actions/checkout@v2"
+      - id: "name"
+        name: "Builds the Helm release name"
+        run: |
+          RELEASE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
+          echo "RELEASE_NAME=$RELEASE_NAME" ->>$GITHUB_ENV
       - id: "install"
         name: "Installs the Helm package"
         run: |
@@ -24,7 +29,12 @@ jobs:
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
           sudo apt-get update
           sudo apt-get install helm
-
+      - id: "deploy"
+        name: "Deploys the Helm chart"
+        run: |
+          helm upgrade ${{ env.RELEASE_NAME }} deployment/kubernetes --create-namespace --namespace workflows
+        env:
+          KUBECONFIG_FILE: "${{ secrets.KUBECONFIG_FILE }}"
 #      - id: "deploy"
 #        name: "Deploys the Helm chart"
 #        uses: "bym0/helm@v1.7.2"
