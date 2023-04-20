@@ -1,0 +1,17 @@
+# JetBrains.
+.idea
+
+# Python.
+__pycache__
+
+# Secure Socket Layer.
+ssl
+
+# Source control.
+.git
+
+# Virtual environment.
+venv
+
+# Visual Studio Code.
+.vscode
