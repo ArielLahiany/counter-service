@@ -23,7 +23,7 @@ jobs:
           release: "counter"
           namespace: "default"
           chart: "deployment/kubernetes"
-          values:
+          values: |
             deployment:
               containers:
                 tag: "v0.3.0"
