@@ -8,6 +8,8 @@ on:
 #    types:
 #      - "completed"
 
+# TODO: need to deploy a EKS cluster and destroy it afterwards.
+
 jobs:
   kubernetes:
     runs-on: "ubuntu-22.04"
@@ -21,6 +23,10 @@ jobs:
         run: |
           RELEASE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')
           echo "RELEASE_NAME=$RELEASE_NAME" >> $GITHUB_ENV
+      - id: "kubeconfig"
+        name: "Deploys the Kubeconfig file"
+        run: |
+          echo "${{ secrets.KUBECONFIG_FILE }}" >> /tmp/.kube/config
       - id: "install"
         name: "Installs the Helm package"
         run: |
@@ -32,19 +38,7 @@ jobs:
       - id: "deploy"
         name: "Deploys the Helm chart"
         run: |
-          helm upgrade ${{ env.RELEASE_NAME }} deployment/kubernetes --create-namespace --namespace workflows
-        env:
-          KUBECONFIG_FILE: "${{ secrets.KUBECONFIG_FILE }}"
-#      - id: "deploy"
-#        name: "Deploys the Helm chart"
-#        uses: "bym0/helm@v1.7.2"
-#        with:
-#          release: "counter"
-#          namespace: "default"
-#          chart: "deployment/kubernetes"
-#          values: |
-#            deployment:
-#              containers:
-#                tag: "v0.3.0"
-#        env:
-#          KUBECONFIG_FILE: "${{ secrets.KUBECONFIG }}"
+          helm install ${{ env.RELEASE_NAME }} deployment/kubernetes \
+               --create-namespace \
+               --kubeconfig /tmp/.kube/config \
+               --namespace workflows
