@@ -18,7 +18,7 @@ jobs:
         uses: "actions/checkout@v2"
       - id: "deploy"
         name: "Deploys the Helm chart"
-        uses: "deliverybot/helm@v1.7.0"
+        uses: "glopezep/helm@v1.7.1"
         with:
           release: "counter"
           namespace: "default"
