@@ -8,8 +8,6 @@ on:
 #    types:
 #      - "completed"
 
-# TODO: need to deploy a EKS cluster and destroy it afterwards.
-
 jobs:
   kubernetes:
     runs-on: "ubuntu-22.04"
@@ -37,10 +35,19 @@ jobs:
           echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
           sudo apt-get update
           sudo apt-get install helm
+      - id: "test"
+        name: "Tests the Helm chart"
+        run: |
+          helm install ${{ env.RELEASE_NAME }} deployment/kubernetes \
+               --create-namespace \
+               --debug \
+               --dry-run \
+               --kubeconfig /tmp/.kube/config \
+               --namespace workflows
       - id: "deploy"
         name: "Deploys the Helm chart"
         run: |
-          helm install ${{ env.RELEASE_NAME }} deployment/kubernetes \
+          helm upgrade ${{ env.RELEASE_NAME }} deployment/kubernetes \
                --create-namespace \
                --kubeconfig /tmp/.kube/config \
                --namespace workflows
