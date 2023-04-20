@@ -16,3 +16,16 @@ jobs:
       - id: "checkout"
         name: "Checkouts the Git repository"
         uses: "actions/checkout@v2"
+      - id: "deploy"
+        name: "Deploys the Helm chart"
+        uses: "deliverybot/helm@v1"
+        with:
+          release: "counter"
+          namespace: "default"
+          chart: "deployment/kubernetes"
+          values:
+            deployment:
+              containers:
+                tag: "v0.3.0"
+        env:
+          KUBECONFIG_FILE: "${{ secrets.KUBECONFIG }}"
