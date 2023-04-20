@@ -13,8 +13,11 @@ A simple web application that counts the number of POST requests it served.
 ## Prerequisites
 
 1. Docker: a working station with Docker and Docker-Compose pre-installed.
+2. Kubernetes: a working Kubernetes cluster and its Kubeconfig file.
 
 ## Usage
+
+### Docker-Compose
 
 1. Add the following entry to the hosts file of your working station:
 
@@ -44,4 +47,17 @@ A simple web application that counts the number of POST requests it served.
 
    ```bash
    curl -x POST -k https://counter.harmony.local
+   ```
+
+### Kubernetes
+
+1. Test the Helm deployment:
+
+   ```bash
+   make helm/test
+   ```
+
+2. Deploy the Helm chart:
+   ```bash
+   make helm/install
    ```
