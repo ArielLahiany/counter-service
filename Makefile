@@ -1,4 +1,5 @@
 # Variables declaration ---------------------------------------------------------------------------------------------- #
+NAMESPACE = "counter-service"
 PROFILE  = "development"
 SERVICE  = "counter-service"
 VERSION  = `git describe --tags --abbrev=0`
@@ -29,3 +30,24 @@ docker-compose/up:
 .PHONY: gunicorn/run
 gunicorn/run:
 	gunicorn main:application --workers 1 --bind 0.0.0.0:8000
+
+# Helm --------------------------------------------------------------------------------------------------------------- #
+.PHONY: helm/delete
+helm/delete:
+	helm delete $(SERVICE) --namespace $(NAMESPACE)
+
+.PHONY: helm/install
+helm/install:
+	helm install $(SERVICE) deployment/kubernetes --create-namespace --namespace $(NAMESPACE)
+
+.PHONY: helm/template
+helm/template:
+	helm template deployment/kubernetes > /tmp/$(SERVICE).yaml
+
+.PHONY: helm/test
+helm/test:
+	helm install $(SERVICE) deployment/kubernetes --create-namespace --namespace $(NAMESPACE) --dry-run --debug
+
+.PHONY: helm/upgrade
+helm/upgrade:
+	helm upgrade $(SERVICE) deployment/kubernetes --namespace $(NAMESPACE)
