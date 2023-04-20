@@ -21,7 +21,7 @@ services:
       - "gunicorn"
       - "main:application"
       - "--workers"
-      - "4"
+      - "1"
       - "--bind"
       - "0.0.0.0:8000"
     profiles:
@@ -29,7 +29,7 @@ services:
       - "staging"
 
   nginx:
-    image: "docker.io/nginx:1.23.1-alpine"
+    image: "docker.io/nginx:1.24.0-bullseye"
     container_name: "nginx"
     hostname: "nginx"
     restart: "unless-stopped"
@@ -49,11 +49,11 @@ services:
         read_only: true
       - type: "bind"
         source: "./ssl"
-        target: "/etc/letsencrypt/live/counter.local"
+        target: "/etc/letsencrypt/live/counter.harmony.local"
         read_only: true
       - type: "volume"
         source: "nginx-log"
-        target: "/var/log/nginx/counter.local"
+        target: "/var/log/nginx/counter.harmony.local"
         read_only: false
     profiles:
       - "development"
